@@ -1,15 +1,31 @@
-{
-  "version": 2,
-  "builds": [
-    {
-      "src": "main.py",
-      "use": "@vercel/python"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "main.py"
-    }
-  ]
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check ID</title>
+    <script>
+        async function fetchId() {
+            try {
+                const response = await fetch('/get-id');
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('result').innerText = `ID: ${data.id}`;
+                } else if (response.status === 403) {
+                    document.getElementById('result').innerText = "IP does not match.";
+                } else {
+                    document.getElementById('result').innerText = "Error: Not Found";
+                }
+            } catch (error) {
+                console.error("Fetch error: ", error);
+                document.getElementById('result').innerText = "Fetch error!";
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Check Your ID</h1>
+    <button onclick="fetchId()">Get ID</button>
+    <pre id="result"></pre>
+</body>
+</html>
